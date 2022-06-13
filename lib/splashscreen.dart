@@ -3,6 +3,8 @@ import 'dart:async';
 import 'loginscreen.dart';
  
 class SplashScreen extends StatefulWidget{
+  const SplashScreen({Key? key}) : super(key: key);
+
   @override
   _SplashScreenState createState()=> _SplashScreenState();
 }
@@ -12,12 +14,13 @@ class _SplashScreenState extends State<SplashScreen> {
   void initState(){
     super.initState();
     Timer(
-      Duration(seconds:3),
+      const Duration(seconds:3),
       () => Navigator.pushReplacement(
-        context, MaterialPageRoute(builder: (content) => LoginScreen())
+        context, MaterialPageRoute(builder: (content) => const LoginScreen())
       )
     );
   }
+  @override
   Widget build(BuildContext context) {
     return Scaffold(
         body: Center(
@@ -25,7 +28,7 @@ class _SplashScreenState extends State<SplashScreen> {
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
               Container(
-                margin: EdgeInsets.all(50),
+                margin: const EdgeInsets.all(50),
                 child: Image.asset('assets/images/EAS.png'))
             ],
           ),

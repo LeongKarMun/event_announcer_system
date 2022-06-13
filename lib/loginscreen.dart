@@ -1,26 +1,29 @@
-import 'package:event_announcer_system/registrationscreen.dart';
+import 'package:event_announcer_system/adminmainpage.dart';
+import 'package:event_announcer_system/eventmainpage.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-// import 'mainscreen.dart';
-// import 'registrationscreen.dart';
-import 'package:http/http.dart' as http;
 import 'mainpage.dart';
+import 'registrationscreen.dart';
+import 'package:http/http.dart' as http;
 
-// import 'user.dart';
+import 'package:event_announcer_system/user.dart';
 
 class LoginScreen extends StatefulWidget {
+  
+  
+  const LoginScreen({Key? key}) : super(key: key);
+
   @override
   _LoginScreenState createState() => _LoginScreenState();
 }
 
-enum SelectType { generalUser, eventOrganizer }
-
 class _LoginScreenState extends State<LoginScreen> {
   bool _rememberMe = false;
-  SelectType _type = SelectType.generalUser;
-  TextEditingController _usernameController = new TextEditingController();
-  TextEditingController _passwordController = new TextEditingController();
+  final TextEditingController _emailController = TextEditingController();
+  final TextEditingController _passwordController = TextEditingController();
+  String? selectType;
+  List<String> items = ['General User', 'Event Organizer', 'Admin'];
   late SharedPreferences prefs;
 
   @override
@@ -39,101 +42,103 @@ class _LoginScreenState extends State<LoginScreen> {
                 child: Column(
           children: [
             Container(
-                margin: EdgeInsets.fromLTRB(70, 0, 70, 10),
-                child: Image.asset('assets/images/EAS.png')),
-            SizedBox(height: 5),
+                margin: const EdgeInsets.fromLTRB(70, 0, 70, 10),
+                child: Image.asset('assets/images/EAS.png', scale: 0.5)),
+            const SizedBox(height: 5),
             Card(
-              margin: EdgeInsets.fromLTRB(20, 0, 20, 5),
-              elevation: 10,
-              child: Padding(
-                padding: const EdgeInsets.fromLTRB(20, 5, 20, 5),
-                child: Column(
-                  mainAxisSize: MainAxisSize.min,
-                  children: [
-                    Text('-Login-',
-                        style: TextStyle(
-                          color: Colors.black,
-                          fontWeight: FontWeight.bold,
-                          fontSize: 23,
-                        )),
-                    SizedBox(height: 5),
-                    Column(
-                      mainAxisSize: MainAxisSize.min,
-                      children: [
-                        ListTile(
-                          title: const Text('General User'),
-                          leading: Radio(
-                            value: SelectType.generalUser,
-                            groupValue: _type,
-                            onChanged: (SelectType? value) {
-                              setState(() {
-                                _type = value!;
-                              });
-                            },
-                          ),
-                        ),
-                        ListTile(
-                          title: const Text('Event Organizer'),
-                          leading: Radio(
-                            value: SelectType.eventOrganizer,
-                            groupValue: _type,
-                            onChanged: (SelectType? value) {
-                              setState(() {
-                                _type = value!;
-                              });
-                            },
-                          ),
-                        ),
-                      ],
-                    ),
-                    TextField(
-                      controller: _usernameController,
-                      decoration: InputDecoration(
-                          labelText: 'Username', icon: Icon(Icons.account_box)),
-                    ),
-                    TextField(
-                      controller: _passwordController,
-                      decoration: InputDecoration(
-                          labelText: 'Password', icon: Icon(Icons.lock)),
-                      obscureText: true,
-                    ),
-                    SizedBox(height: 5),
-                    Row(
-                      children: [
-                        Checkbox(
-                            value: _rememberMe,
-                            onChanged: (bool? value) {
-                              _onChange(value!);
-                            }),
-                        Text("Remember Me")
-                      ],
-                    ),
-                    MaterialButton(
-                      shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(5),
-                      ),
-                      minWidth: 100,
-                      height: 40,
-                      child: Text('Login',
+                margin: const EdgeInsets.fromLTRB(30, 5, 30, 15),
+                elevation: 10,
+                child: Padding(
+                  padding: const EdgeInsets.fromLTRB(20, 5, 20, 5),
+                  child: Column(
+                    children: [
+                      const Text('Login',
                           style: TextStyle(
-                            color: Colors.white,
+                            color: Colors.black,
+                            fontWeight: FontWeight.bold,
+                            fontSize: 23,
                           )),
-                      onPressed: _onLogin,
-                      color: Colors.blue,
-                    ),
-                    SizedBox(height: 10),
-                  ],
-                ),
-              ),
-            ),
+                      TextField(
+                        controller: _emailController,
+                        keyboardType: TextInputType.emailAddress,
+                        decoration: const InputDecoration(
+                            labelText: 'Email', icon: Icon(Icons.email)),
+                      ),
+                      TextField(
+                        controller: _passwordController,
+                        decoration: const InputDecoration(
+                            labelText: 'Password', icon: Icon(Icons.lock)),
+                        obscureText: true,
+                      ),
+                      const SizedBox(height: 10),
+                      SingleChildScrollView(
+                          child: Column(
+                              mainAxisAlignment: MainAxisAlignment.start,
+                              children: [
+                            DropdownButton(
+                              hint: Text(
+                                'Select Type',
+                                style: TextStyle(
+                                  fontSize: 14,
+                                  color: Theme.of(context).hintColor,
+                                ),
+                              ),
+                              value: selectType,
+                              icon: const Icon(Icons.keyboard_arrow_down),
+                              elevation: 10,
+                              underline:
+                                  Container(height: 2, color: Colors.grey),
+                              items: items.map((String items) {
+                                return DropdownMenuItem(
+                                  value: items,
+                                  child: Text(items),
+                                );
+                              }).toList(),
+                              onChanged: (String? newValue) {
+                                setState(() {
+                                  selectType = newValue!;
+                                });
+                              },
+                              //  isExpanded: true,
+                            ),
+                          ])),
+                      const SizedBox(height: 5),
+                      Row(
+                        children: [
+                          Checkbox(
+                              value: _rememberMe,
+                              onChanged: (bool? value) {
+                                _onChange(value!);
+                              }),
+                          const Text("Remember Me")
+                        ],
+                      ),
+                      MaterialButton(
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(5),
+                        ),
+                        minWidth: 100,
+                        height: 40,
+                        child: const Text('Login',
+                            style: TextStyle(
+                              color: Colors.white,
+                            )),
+                        onPressed: _onLogin,
+                        color: Colors.blue,
+                      ),
+                      const SizedBox(height: 10),
+                    ],
+                  ),
+                )),
             GestureDetector(
-              child:
-                  Text("Resigter New Account", style: TextStyle(fontSize: 16)),
+              child: const Text("Resigter New Account",
+                  style: TextStyle(fontSize: 16)),
               onTap: _registerNewUser,
             ),
-            SizedBox(height: 10),
+            const SizedBox(height: 10),
             GestureDetector(
-              child: Text("Forgot Password", style: TextStyle(fontSize: 16)),
+              child: const Text("Forgot Password",
+                  style: TextStyle(fontSize: 16)),
               onTap: _forgotPassword,
             )
           ],
@@ -143,87 +148,114 @@ class _LoginScreenState extends State<LoginScreen> {
   }
 
   void _onChange(bool value) {
-    String _username = _usernameController.text.toString();
+    String _email = _emailController.text.toString();
     String _password = _passwordController.text.toString();
 
-    if (_username.isEmpty || _password.isEmpty) {
+    if (_email.isEmpty || _password.isEmpty) {
       Fluttertoast.showToast(
-          msg: "Username/Password is empty",
+          msg: "Email/Password is empty",
           toastLength: Toast.LENGTH_SHORT,
           gravity: ToastGravity.BOTTOM,
           timeInSecForIosWeb: 1,
-          backgroundColor: Color.fromRGBO(191, 30, 46, 50),
+          backgroundColor: const Color.fromRGBO(191, 30, 46, 50),
           textColor: Colors.white,
           fontSize: 16.0);
       return;
     }
     setState(() {
       _rememberMe = value;
-      storePref(value, _username, _password);
+      storePref(value, _email, _password);
     });
   }
 
   void _onLogin() {
-    String _username = _usernameController.text.toString();
+    String _email = _emailController.text.toString();
     String _password = _passwordController.text.toString();
+    String? type;
 
-    // http.post(
-    //     Uri.parse(
-    //         "http://javathree99.com/s269926/alloutgroceries/php/login_user.php"),
-    //     body: {"email": _email, "password": _password}).then((response) {
-    //   print(response.body);
-    //   if (response.body == "failed") {
-    //     Fluttertoast.showToast(
-    //         msg: "Login Failed",
-    //         toastLength: Toast.LENGTH_SHORT,
-    //         gravity: ToastGravity.BOTTOM,
-    //         timeInSecForIosWeb: 1,
-    //         backgroundColor: Color.fromRGBO(191, 30, 46, 50),
-    //         textColor: Colors.white,
-    //         fontSize: 16.0);
-    //   } else {
-    //     List userData = response.body.split(",");
-    //     // User user = new User(
-    //     //     user_email: _email,
-    //     //     username: userData[1],
-    //     //     phoneno: userData[2]);
-        Navigator.push(context,
-            MaterialPageRoute(builder: (content) => MainPage()));
-  // }
-    // });
+    setState(() {
+      if (selectType == 'General User') {
+        type = 'General User';
+        print(type);
+      } else if (selectType == 'Event Organizer') {
+        type = 'Event Organizer';
+        print(type);
+      } else {
+        type = 'Admin';
+      }
+    });
+
+    http.post(
+        Uri.parse(
+            "http://hubbuddies.com/s269926/event_announce_system/php/login_user.php"),
+        body: {
+          "email": _email,
+          "password": _password,
+           "type": type,
+        }).then((response) {
+          print(response.body);
+          if (response.body == "failed") {
+        Fluttertoast.showToast(
+            msg: "Login Failed",
+            toastLength: Toast.LENGTH_SHORT,
+            gravity: ToastGravity.BOTTOM,
+            timeInSecForIosWeb: 1,
+            backgroundColor: const Color.fromRGBO(191, 30, 46, 50),
+            textColor: Colors.white,
+            fontSize: 16.0);
+      } else {
+        List userData = response.body.split(",");
+        User user = User(
+            user_email: _email,
+            // username: userData[1],
+            // phoneno: userData[2]
+            );
+       if ( type == 'General User') {
+        Navigator.pushReplacement(
+            context, MaterialPageRoute(builder: (content) =>  MainPage(user: user)));
+      } else if (type == 'Event Organizer') {
+        Navigator.pushReplacement(context,
+            MaterialPageRoute(builder: (content) => EventMainPage(user: user)));
+      }else{
+        Navigator.pushReplacement(
+            context, MaterialPageRoute(builder: (content) => AdminMainPage(user: user)));
+      }
+      // print(response.body);
+      }
+    });
   }
 
   void _registerNewUser() {
-    Navigator.push(
-        context, MaterialPageRoute(builder: (content) => RegistrationScreen()));
+    Navigator.push(context,
+        MaterialPageRoute(builder: (content) => const RegistrationScreen()));
   }
 
   void _forgotPassword() {
-    TextEditingController _useremailController = new TextEditingController();
+    TextEditingController _useremailController = TextEditingController();
     showDialog(
         context: context,
         builder: (BuildContext context) {
           return AlertDialog(
-            title:
-                Text("Forgot Your Password ?", style: TextStyle(fontSize: 15)),
-            content: new Container(
+            title: const Text("Forgot Your Password ?",
+                style: TextStyle(fontSize: 15)),
+            content: Container(
                 height: 100,
                 child: SingleChildScrollView(
                     child: Column(
                   children: [
-                    Text("Enter your recovery email: ",
+                    const Text("Enter your recovery email: ",
                         style: TextStyle(fontSize: 13)),
                     TextField(
                       controller: _useremailController,
                       keyboardType: TextInputType.emailAddress,
-                      decoration: InputDecoration(
+                      decoration: const InputDecoration(
                           labelText: 'Email', icon: Icon(Icons.email)),
                     )
                   ],
                 ))),
             actions: [
               TextButton(
-                child: Text('Submit'),
+                child: const Text('Submit'),
                 onPressed: () {
                   print(_useremailController.text);
                   _resetPassword(_useremailController.text.toString());
@@ -231,7 +263,7 @@ class _LoginScreenState extends State<LoginScreen> {
                 },
               ),
               TextButton(
-                  child: Text('Cancel'),
+                  child: const Text('Cancel'),
                   onPressed: () {
                     Navigator.of(context).pop();
                   }),
@@ -241,37 +273,37 @@ class _LoginScreenState extends State<LoginScreen> {
   }
 
   void _resetPassword(String emailreset) {
-    // http.post(
-    //     Uri.parse(
-    //         "http://javathree99.com/s269926/alloutgroceries/php/reset_user.php"),
-    //     body: {"email": emailreset}).then((response) {
-    //   print(response.body);
-    //   if (response.body == "success") {
-    //     Fluttertoast.showToast(
-    //         msg: "Please check your email.",
-    //         toastLength: Toast.LENGTH_SHORT,
-    //         gravity: ToastGravity.BOTTOM,
-    //         timeInSecForIosWeb: 1,
-    //         backgroundColor: Color.fromRGBO(191, 30, 46, 50),
-    //         textColor: Colors.white,
-    //         fontSize: 16.0);
-    //   } else {
-    //     Fluttertoast.showToast(
-    //         msg: "Failed",
-    //         toastLength: Toast.LENGTH_SHORT,
-    //         gravity: ToastGravity.BOTTOM,
-    //         timeInSecForIosWeb: 1,
-    //         backgroundColor: Color.fromRGBO(191, 30, 46, 50),
-    //         textColor: Colors.white,
-    //         fontSize: 16.0);
-    //   }
-    // });
+    http.post(
+        Uri.parse(
+            "http://hubbuddies.com/s269926/event_announce_system/php/reset_user.php"),
+        body: {"email": emailreset}).then((response) {
+      print(response.body);
+      if (response.body == "success") {
+        Fluttertoast.showToast(
+            msg: "Please check your email.",
+            toastLength: Toast.LENGTH_SHORT,
+            gravity: ToastGravity.BOTTOM,
+            timeInSecForIosWeb: 1,
+            backgroundColor: const Color.fromRGBO(191, 30, 46, 50),
+            textColor: Colors.white,
+            fontSize: 16.0);
+      } else {
+        Fluttertoast.showToast(
+            msg: "Failed",
+            toastLength: Toast.LENGTH_SHORT,
+            gravity: ToastGravity.BOTTOM,
+            timeInSecForIosWeb: 1,
+            backgroundColor: const Color.fromRGBO(191, 30, 46, 50),
+            textColor: Colors.white,
+            fontSize: 16.0);
+      }
+    });
   }
 
-  Future<void> storePref(bool value, String username, String password) async {
+  Future<void> storePref(bool value, String email, String password) async {
     prefs = await SharedPreferences.getInstance();
     if (value) {
-      await prefs.setString("username", username);
+      await prefs.setString("email", email);
       await prefs.setString("password", password);
       await prefs.setBool("rememberme", value);
       Fluttertoast.showToast(
@@ -279,12 +311,12 @@ class _LoginScreenState extends State<LoginScreen> {
           toastLength: Toast.LENGTH_SHORT,
           gravity: ToastGravity.BOTTOM,
           timeInSecForIosWeb: 1,
-          backgroundColor: Color.fromRGBO(191, 30, 46, 50),
+          backgroundColor: const Color.fromRGBO(191, 30, 46, 50),
           textColor: Colors.white,
           fontSize: 16.0);
       return;
     } else {
-      await prefs.setString("username", username);
+      await prefs.setString("email", email);
       await prefs.setString("password", password);
       await prefs.setBool("rememberme", value);
       Fluttertoast.showToast(
@@ -292,11 +324,11 @@ class _LoginScreenState extends State<LoginScreen> {
           toastLength: Toast.LENGTH_SHORT,
           gravity: ToastGravity.BOTTOM,
           timeInSecForIosWeb: 1,
-          backgroundColor: Color.fromRGBO(191, 30, 46, 50),
+          backgroundColor: const Color.fromRGBO(191, 30, 46, 50),
           textColor: Colors.white,
           fontSize: 16.0);
       setState(() {
-        _usernameController.text = "";
+        _emailController.text = "";
         _passwordController.text = "";
         _rememberMe = false;
       });
@@ -306,12 +338,13 @@ class _LoginScreenState extends State<LoginScreen> {
 
   Future<void> loadPref() async {
     prefs = await SharedPreferences.getInstance();
-    String _username = prefs.getString("username") ?? '';
+    String _email = prefs.getString("email") ?? '';
     String _password = prefs.getString("password") ?? '';
+    String? selectType = prefs.getString("type") ?? '';
     _rememberMe = prefs.getBool("remember") ?? false;
 
     setState(() {
-      _usernameController.text = _username;
+      _emailController.text = _email;
       _passwordController.text = _password;
     });
   }

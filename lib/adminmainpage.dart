@@ -2,24 +2,25 @@ import 'dart:async';
 import 'dart:convert';
 
 import 'package:cached_network_image/cached_network_image.dart';
+import 'package:event_announcer_system/adminapprove.dart';
 import 'package:event_announcer_system/event.dart';
 import 'package:event_announcer_system/eventdetails.dart';
 import 'package:event_announcer_system/loginscreen.dart';
 import 'package:event_announcer_system/user.dart';
 import 'package:event_announcer_system/userregister.dart';
+import 'package:event_announcer_system/viewacc.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 
-class MainPage extends StatefulWidget {
-
+class AdminMainPage extends StatefulWidget {
   final User user;
-  const MainPage({Key? key, required this.user}) : super(key: key);
+  const AdminMainPage({Key? key, required this.user}) : super(key: key);
 
   @override
-  State<MainPage> createState() => _MainPageState();
+  State<AdminMainPage> createState() => _AdminMainPageState();
 }
 
-class _MainPageState extends State<MainPage> {
+class _AdminMainPageState extends State<AdminMainPage> {
   late PageController _pageController;
   // late Timer _timer;
   // List<String> imageList = [
@@ -84,24 +85,35 @@ class _MainPageState extends State<MainPage> {
               decoration: BoxDecoration(color: Colors.blueGrey[400]),
             ),
             ListTile(
-              title: const Text("My Register", style: TextStyle(fontSize: 16)),
+              title:
+                  const Text("Manage Account", style: TextStyle(fontSize: 16)),
               onTap: () {
-                Navigator.push(context,
-                    MaterialPageRoute(builder: (content) => UserRegister(user: widget.user)));
+                // Navigator.pop(context);
+                Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                        builder: (content) => AdminApprove(user: widget.user)));
+                // Navigator.push(
+                //     context,
+                //     MaterialPageRoute(
+                //         builder: (content) => MainScreen(user: widget.user)));
               },
             ),
-            // ListTile(
-            //   title: const Text("History", style: TextStyle(fontSize: 16)),
-            //   onTap: () {
-            //     // Navigator.pop(context);
-            //     // Navigator.push(context,
-            //     //     MaterialPageRoute(builder: (content) => UserRegister()));
-            //     // Navigator.push(
-            //     //     context,
-            //     //     MaterialPageRoute(
-            //     //         builder: (content) => MainScreen(user: widget.user)));
-            //   },
-            // ),
+            ListTile(
+              title: const Text("View Account Status",
+                  style: TextStyle(fontSize: 16)),
+              onTap: () {
+                // Navigator.pop(context);
+                Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                        builder: (content) => ViewAcc(user: widget.user)));
+                // Navigator.push(
+                //     context,
+                //     MaterialPageRoute(
+                //         builder: (content) => MainScreen(user: widget.user)));
+              },
+            ),
             ListTile(
               title: const Text("My Account", style: TextStyle(fontSize: 16)),
               onTap: () {
@@ -116,7 +128,8 @@ class _MainPageState extends State<MainPage> {
                 title: const Text("Logout", style: TextStyle(fontSize: 16)),
                 onTap: _logout),
           ],
-        )),
+        ),
+      ),
       body: Center(
           child: Column(children: [
         Container(
@@ -130,7 +143,7 @@ class _MainPageState extends State<MainPage> {
                 child: TextFormField(
                   style: const TextStyle(fontSize: 15),
                   controller: _srcController,
-                  decoration:  InputDecoration(
+                  decoration: InputDecoration(
                     hintText: "Search",
                     suffixIcon: IconButton(
                       icon: const Icon(Icons.search),
@@ -185,32 +198,6 @@ class _MainPageState extends State<MainPage> {
                                               //  fit: BoxFit.fitWidth,
                                             ),
                                           )),
-                                      // const SizedBox(height: 10),
-                                      // Container(
-                                      //    height: 100,
-                                      //     child: Column(
-                                      //   // crossAxisAlignment:
-                                      //   //     CrossAxisAlignment.start,
-                                      //   // mainAxisAlignment:
-                                      //   //     MainAxisAlignment.spaceBetween,
-                                      //   children: [
-                                      //     Padding(
-                                      //         padding: const EdgeInsets.fromLTRB(
-                                      //             10, 0, 0, 0),
-                                      //         child: Text(
-                                      //           titleSub(_eventList[index]
-                                      //               ['evtitle']),
-                                      //           style: const TextStyle(
-                                      //               fontSize: 18,
-                                      //               fontWeight:
-                                      //                   FontWeight.bold),
-                                      //         )),
-                                      //     // Text(
-                                      //     //     titleSub(_eventList[index]['evdescp']),
-                                      //     //     style: TextStyle(fontSize: 16)),
-                                      //   ],
-                                      // )
-                                      // )
                                       Container(
                                           height: 100,
                                           child: const VerticalDivider(
@@ -332,15 +319,18 @@ class _MainPageState extends State<MainPage> {
     );
 
     Navigator.push(
-        context, MaterialPageRoute(builder: (content) => EventDetails(event: event, user: widget.user)));
+        context,
+        MaterialPageRoute(
+            builder: (content) =>
+                EventDetails(event: event, user: widget.user)));
   }
 
   void _logout() {
-     Navigator.push(
+    Navigator.push(
         context, MaterialPageRoute(builder: (content) => const LoginScreen()));
   }
 
-    _searchevent(String evtitle) {
+  _searchevent(String evtitle) {
     http.post(
         Uri.parse(
             "http://hubbuddies.com/s269926/event_announce_system/php/load_event.php"),

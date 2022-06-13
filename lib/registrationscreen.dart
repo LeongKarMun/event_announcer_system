@@ -1,25 +1,24 @@
+import 'package:event_announcer_system/user.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:http/http.dart' as http;
 import 'loginscreen.dart';
 
 class RegistrationScreen extends StatefulWidget {
+  
+  const RegistrationScreen({Key? key}) : super(key: key);
+
   @override
   _RegistrationScreenState createState() => _RegistrationScreenState();
 }
 
-enum SelectType { generalUser, eventOrganizer }
-
 class _RegistrationScreenState extends State<RegistrationScreen> {
-  TextEditingController _nameController = new TextEditingController();
-  TextEditingController _matricController = new TextEditingController();
-  TextEditingController _phoneController = new TextEditingController();
-  TextEditingController _emailController = new TextEditingController();
-  TextEditingController _passwordControllerA = new TextEditingController();
-  TextEditingController _passwordControllerB = new TextEditingController();
+  final TextEditingController _emailController = TextEditingController();
+  final TextEditingController _passwordControllerA = TextEditingController();
+  final TextEditingController _passwordControllerB = TextEditingController();
   bool _obscureText = true;
   bool _isChecked = false;
-  SelectType _type = SelectType.generalUser;
+  int? userType = -1;
 
   @override
   Widget build(BuildContext context) {
@@ -31,34 +30,34 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
                 child: Column(
           children: [
             Container(
-                margin: EdgeInsets.fromLTRB(70, 0, 70, 10),
+                margin: const EdgeInsets.fromLTRB(70, 0, 70, 10),
                 child: Image.asset('assets/images/EAS.png', scale: 0.5)),
-            SizedBox(height: 5),
+            const SizedBox(height: 5),
             Card(
-              margin: EdgeInsets.fromLTRB(30, 5, 30, 15),
+              margin: const EdgeInsets.fromLTRB(30, 5, 30, 15),
               elevation: 10,
               child: Padding(
                 padding: const EdgeInsets.fromLTRB(20, 5, 20, 5),
                 child: Column(
                   children: [
-                    Text('Registration',
+                    const Text('Registration',
                         style: TextStyle(
                           color: Colors.black,
                           fontWeight: FontWeight.bold,
                           fontSize: 23,
                         )),
-                    SizedBox(height: 5),
+                    const SizedBox(height: 5),
                     Column(
                       mainAxisSize: MainAxisSize.min,
                       children: [
                         ListTile(
                           title: const Text('General User'),
                           leading: Radio(
-                            value: SelectType.generalUser,
-                            groupValue: _type,
-                            onChanged: (SelectType? value) {
+                            value: 1,
+                            groupValue: userType,
+                            onChanged: (value) {
                               setState(() {
-                                _type = value!;
+                                userType = value as int?;
                               });
                             },
                           ),
@@ -66,48 +65,31 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
                         ListTile(
                           title: const Text('Event Organizer'),
                           leading: Radio(
-                            value: SelectType.eventOrganizer,
-                            groupValue: _type,
-                            onChanged: (SelectType? value) {
+                            value: 2,
+                            groupValue: userType,
+                            onChanged: (value) {
                               setState(() {
-                                _type = value!;
+                                userType = value as int?;
                               });
                             },
                           ),
                         ),
                       ],
                     ),
-                                        TextField(
-                      controller: _nameController,
-                      decoration: InputDecoration(
-                          labelText: 'Name/Organization Name', icon: Icon(Icons.account_box)),
-                    ),
-                                        TextField(
-                      controller: _emailController,
-                      keyboardType: TextInputType.number,
-                      decoration: InputDecoration(
-                          labelText: 'No Matric', icon: Icon(Icons.credit_card)),
-                    ),
-                                        TextField(
-                      controller: _emailController,
-                      keyboardType: TextInputType.number,
-                      decoration: InputDecoration(
-                          labelText: 'Phone Number', icon: Icon(Icons.phone)),
-                    ),
                     TextField(
                       controller: _emailController,
                       keyboardType: TextInputType.emailAddress,
-                      decoration: InputDecoration(
+                      decoration: const InputDecoration(
                           labelText: 'Email', icon: Icon(Icons.email)),
                     ),
                     TextField(
                       controller: _passwordControllerA,
                       decoration: InputDecoration(
                         labelText: 'Password',
-                        icon: Icon(Icons.lock),
+                        icon: const Icon(Icons.lock),
                         suffix: InkWell(
                           onTap: _togglePass,
-                          child: Icon(Icons.visibility),
+                          child: const Icon(Icons.visibility),
                         ),
                       ),
                       obscureText: _obscureText,
@@ -116,27 +98,27 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
                       controller: _passwordControllerB,
                       decoration: InputDecoration(
                         labelText: 'Enter Password Again',
-                        icon: Icon(Icons.lock),
+                        icon: const Icon(Icons.lock),
                         suffix: InkWell(
                           onTap: _togglePass,
-                          child: Icon(Icons.visibility),
+                          child: const Icon(Icons.visibility),
                         ),
                       ),
                       obscureText: _obscureText,
                     ),
-                    SizedBox(height: 5),
+                    const SizedBox(height: 5),
                     Row(
                         mainAxisAlignment: MainAxisAlignment.start,
                         children: <Widget>[
                           Checkbox(
                             value: _isChecked,
-                            onChanged: (value) {
+                            onChanged: (bool? value) {
                               _onChange(value!);
                             },
                           ),
                           GestureDetector(
                             onTap: _showEULA,
-                            child: Text('I Agree to Terms  ',
+                            child: const Text('I Agree to Terms  ',
                                 style: TextStyle(
                                   fontSize: 16,
                                   fontWeight: FontWeight.bold,
@@ -149,22 +131,23 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
                         ),
                         minWidth: 100,
                         height: 40,
-                        child: Text('Register',
+                        child: const Text('Register',
                             style: TextStyle(
                               color: Colors.white,
                             )),
                         onPressed: _onRegister,
                         color: Colors.blue),
-                    SizedBox(height: 10),
+                    const SizedBox(height: 10),
                   ],
                 ),
               ),
             ),
             GestureDetector(
-              child: Text("Already Register?", style: TextStyle(fontSize: 16)),
+              child: const Text("Already Register?",
+                  style: TextStyle(fontSize: 16)),
               onTap: _alreadyRegister,
             ),
-            SizedBox(height: 5),
+            const SizedBox(height: 5),
           ],
         ))),
       ),
@@ -180,13 +163,14 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
 
   void _alreadyRegister() {
     Navigator.push(
-        context, MaterialPageRoute(builder: (context) => LoginScreen()));
+        context, MaterialPageRoute(builder: (context) => const LoginScreen()));
   }
 
   void _onRegister() {
     String _email = _emailController.text.toString();
     String _passwordA = _passwordControllerA.text.toString();
     String _passwordB = _passwordControllerB.text.toString();
+    String? type;
 
     if (_email.isEmpty || _passwordA.isEmpty || _passwordB.isEmpty) {
       Fluttertoast.showToast(
@@ -194,7 +178,7 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
           toastLength: Toast.LENGTH_SHORT,
           gravity: ToastGravity.BOTTOM,
           timeInSecForIosWeb: 1,
-          backgroundColor: Color.fromRGBO(191, 30, 46, 50),
+          backgroundColor: const Color.fromRGBO(191, 30, 46, 50),
           textColor: Colors.white,
           fontSize: 16.0);
       return;
@@ -255,25 +239,82 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
           fontSize: 16.0);
       return;
     }
+    setState(() {
+      if (userType == 1) {
+        type = 'General User';
+        print(type);
+      } else if (userType == 2) {
+        type = 'Event Organizer';
+        print(type);
+      } else {
+        type = 'Admin';
+      }
+    });
 
     showDialog(
         context: context,
         builder: (BuildContext context) {
           return AlertDialog(
-            shape: RoundedRectangleBorder(
+            shape: const RoundedRectangleBorder(
                 borderRadius: BorderRadius.all(Radius.circular(20.0))),
-            title: Text("Register new user"),
-            content: Text("Are you sure?"),
+            title: const Text("Register new user"),
+            content: const Text("Are you sure?"),
             actions: [
               TextButton(
-                child: Text('OK'),
+                child: const Text('OK'),
                 onPressed: () {
-                  Navigator.of(context).pop();
-                  _registerUser(_email, _passwordA);
+                  // _registerUser(_email, _passwordA, userType);
+                  http.post(
+                      Uri.parse(
+                          "http://hubbuddies.com/s269926/event_announce_system/php/register_user.php"),
+                      body: {
+                        "_email": _email,
+                        "_passwordA": _passwordA,
+                        "type": type
+                      }).then((response) {
+                    print(response.body);
+                    if (response.body == "register_success") {
+                      Fluttertoast.showToast(
+                          msg:
+                              "Register as general user success. Please refer your email to verify the new account.",
+                          toastLength: Toast.LENGTH_SHORT,
+                          gravity: ToastGravity.BOTTOM,
+                          timeInSecForIosWeb: 5,
+                          backgroundColor:
+                              const Color.fromRGBO(191, 30, 46, 50),
+                          textColor: Colors.white,
+                          fontSize: 16.0);
+                    } else if (response.body == "request_success") {
+                      Fluttertoast.showToast(
+                          msg:
+                              "Register as event organizer success. Please wait admin to approve around 1-2 days and check your email to verify the new account.",
+                          toastLength: Toast.LENGTH_SHORT,
+                          gravity: ToastGravity.BOTTOM,
+                          timeInSecForIosWeb: 5,
+                          backgroundColor:
+                              const Color.fromRGBO(191, 30, 46, 50),
+                          textColor: Colors.white,
+                          fontSize: 16.0);
+                    } else {
+                      Fluttertoast.showToast(
+                          msg: "Registration/Request Failed",
+                          toastLength: Toast.LENGTH_SHORT,
+                          gravity: ToastGravity.BOTTOM,
+                          timeInSecForIosWeb: 5,
+                          backgroundColor:
+                              const Color.fromRGBO(191, 30, 46, 50),
+                          textColor: Colors.white,
+                          fontSize: 16.0);
+                    }
+                    Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                            builder: (content) => const LoginScreen()));
+                  });
                 },
               ),
               TextButton(
-                  child: Text('Cancel'),
+                  child: const Text('Cancel'),
                   onPressed: () {
                     Navigator.of(context).pop();
                   }),
@@ -282,51 +323,23 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
         });
   }
 
-  void _registerUser(String email, String password) {
-    // http.post(
-    //     Uri.parse(
-    //         "http://javathree99.com/s269926/alloutgroceries/php/register_user.php"),
-    //     body: {"email": email, "password": password}).then((response) {
-    //   print(response.body);
-    //   if (response.body == "success") {
-    //     Fluttertoast.showToast(
-    //         msg:
-    //             "Register success. Please refer your email to verify the new account.",
-    //         toastLength: Toast.LENGTH_SHORT,
-    //         gravity: ToastGravity.BOTTOM,
-    //         timeInSecForIosWeb: 1,
-    //         backgroundColor: Color.fromRGBO(191, 30, 46, 50),
-    //         textColor: Colors.white,
-    //         fontSize: 16.0);
-    //   } else {
-    //     Fluttertoast.showToast(
-    //         msg: "Registration Failed",
-    //         toastLength: Toast.LENGTH_SHORT,
-    //         gravity: ToastGravity.BOTTOM,
-    //         timeInSecForIosWeb: 1,
-    //         backgroundColor: Color.fromRGBO(191, 30, 46, 50),
-    //         textColor: Colors.white,
-    //         fontSize: 16.0);
-    //   }
-    // });
-  }
   void _showEULA() {
     showDialog(
       context: context,
       builder: (BuildContext context) {
         return AlertDialog(
-          title: new Text("EULA"),
-          content: new Container(
+          title: const Text("EULA"),
+          content: Container(
             height: 180,
             child: Column(
               children: <Widget>[
                 Expanded(
                   flex: 1,
-                  child: new SingleChildScrollView(
+                  child: SingleChildScrollView(
                     child: RichText(
                         softWrap: true,
                         textAlign: TextAlign.justify,
-                        text: TextSpan(
+                        text: const TextSpan(
                             style: TextStyle(
                               color: Colors.black,
                               fontSize: 12.0,
@@ -339,8 +352,8 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
             ),
           ),
           actions: <Widget>[
-            new TextButton(
-              child: new Text(
+            TextButton(
+              child: const Text(
                 "Close",
                 style: TextStyle(color: Colors.black),
               ),
@@ -355,16 +368,14 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
   }
 
   bool validateEmail(String value) {
-    // Pattern pattern =
-    //     r'^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$';
-    RegExp regex = new RegExp(
+    RegExp regex = RegExp(
         r'^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$');
     return (!regex.hasMatch(value)) ? false : true;
   }
 
   bool validatePassword(String value) {
     String pattern = r'^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9]).{5,}$';
-    RegExp regExp = new RegExp(pattern);
+    RegExp regExp = RegExp(pattern);
     print(regExp.hasMatch(value));
     return regExp.hasMatch(value);
   }
