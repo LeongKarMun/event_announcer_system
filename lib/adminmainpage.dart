@@ -217,6 +217,11 @@ class _AdminMainPageState extends State<AdminMainPage> {
                                                       fontSize: 16,
                                                       fontWeight:
                                                           FontWeight.bold)),
+                                                          Text(
+                                                  descpSub(_eventList[index]
+                                                      ['evdescription']),
+                                                  style: const TextStyle(
+                                                      fontSize: 14)),
                                             ],
                                           ),
                                         ),
@@ -295,13 +300,7 @@ class _AdminMainPageState extends State<AdminMainPage> {
   //   );
   // }
 
-  String titleSub(String title) {
-    if (title.length > 20) {
-      return title.substring(0, 25) + "...";
-    } else {
-      return title;
-    }
-  }
+
 
   Future<void> _testasync() async {
     await _loadEvent();
@@ -323,6 +322,14 @@ class _AdminMainPageState extends State<AdminMainPage> {
         MaterialPageRoute(
             builder: (content) =>
                 EventDetails(event: event, user: widget.user)));
+  }
+
+      String descpSub(String descp) {
+    if (descp.length > 35) {
+      return descp.substring(0, 35) + "...";
+    } else {
+      return descp;
+    }
   }
 
   void _logout() {

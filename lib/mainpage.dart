@@ -11,7 +11,6 @@ import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 
 class MainPage extends StatefulWidget {
-
   final User user;
   const MainPage({Key? key, required this.user}) : super(key: key);
 
@@ -76,47 +75,49 @@ class _MainPageState extends State<MainPage> {
         title: const Text('Home Page'),
       ),
       drawer: Drawer(
-        child: ListView(
-          children: [
-            DrawerHeader(
-              child: const Text("MENU",
-                  style: TextStyle(color: Colors.white, fontSize: 20)),
-              decoration: BoxDecoration(color: Colors.blueGrey[400]),
-            ),
-            ListTile(
-              title: const Text("My Register", style: TextStyle(fontSize: 16)),
-              onTap: () {
-                Navigator.push(context,
-                    MaterialPageRoute(builder: (content) => UserRegister(user: widget.user)));
-              },
-            ),
-            // ListTile(
-            //   title: const Text("History", style: TextStyle(fontSize: 16)),
-            //   onTap: () {
-            //     // Navigator.pop(context);
-            //     // Navigator.push(context,
-            //     //     MaterialPageRoute(builder: (content) => UserRegister()));
-            //     // Navigator.push(
-            //     //     context,
-            //     //     MaterialPageRoute(
-            //     //         builder: (content) => MainScreen(user: widget.user)));
-            //   },
-            // ),
-            ListTile(
-              title: const Text("My Account", style: TextStyle(fontSize: 16)),
-              onTap: () {
-                Navigator.pop(context);
-                // Navigator.push(
-                //     context,
-                //     MaterialPageRoute(
-                //         builder: (content) => UserAccount(user: widget.user)));
-              },
-            ),
-            ListTile(
-                title: const Text("Logout", style: TextStyle(fontSize: 16)),
-                onTap: _logout),
-          ],
-        )),
+          child: ListView(
+        children: [
+          DrawerHeader(
+            child: const Text("MENU",
+                style: TextStyle(color: Colors.white, fontSize: 20)),
+            decoration: BoxDecoration(color: Colors.blueGrey[400]),
+          ),
+          ListTile(
+            title: const Text("My Register", style: TextStyle(fontSize: 16)),
+            onTap: () {
+              Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                      builder: (content) => UserRegister(user: widget.user)));
+            },
+          ),
+          // ListTile(
+          //   title: const Text("History", style: TextStyle(fontSize: 16)),
+          //   onTap: () {
+          //     // Navigator.pop(context);
+          //     // Navigator.push(context,
+          //     //     MaterialPageRoute(builder: (content) => UserRegister()));
+          //     // Navigator.push(
+          //     //     context,
+          //     //     MaterialPageRoute(
+          //     //         builder: (content) => MainScreen(user: widget.user)));
+          //   },
+          // ),
+          ListTile(
+            title: const Text("My Account", style: TextStyle(fontSize: 16)),
+            onTap: () {
+              Navigator.pop(context);
+              // Navigator.push(
+              //     context,
+              //     MaterialPageRoute(
+              //         builder: (content) => UserAccount(user: widget.user)));
+            },
+          ),
+          ListTile(
+              title: const Text("Logout", style: TextStyle(fontSize: 16)),
+              onTap: _logout),
+        ],
+      )),
       body: Center(
           child: Column(children: [
         Container(
@@ -130,7 +131,7 @@ class _MainPageState extends State<MainPage> {
                 child: TextFormField(
                   style: const TextStyle(fontSize: 15),
                   controller: _srcController,
-                  decoration:  InputDecoration(
+                  decoration: InputDecoration(
                     hintText: "Search",
                     suffixIcon: IconButton(
                       icon: const Icon(Icons.search),
@@ -230,6 +231,11 @@ class _MainPageState extends State<MainPage> {
                                                       fontSize: 16,
                                                       fontWeight:
                                                           FontWeight.bold)),
+                                              Text(
+                                                  descpSub(_eventList[index]
+                                                      ['evdescription']),
+                                                  style: const TextStyle(
+                                                      fontSize: 14)),
                                             ],
                                           ),
                                         ),
@@ -308,13 +314,7 @@ class _MainPageState extends State<MainPage> {
   //   );
   // }
 
-  String titleSub(String title) {
-    if (title.length > 20) {
-      return title.substring(0, 25) + "...";
-    } else {
-      return title;
-    }
-  }
+
 
   Future<void> _testasync() async {
     await _loadEvent();
@@ -332,15 +332,26 @@ class _MainPageState extends State<MainPage> {
     );
 
     Navigator.push(
-        context, MaterialPageRoute(builder: (content) => EventDetails(event: event, user: widget.user)));
+        context,
+        MaterialPageRoute(
+            builder: (content) =>
+                EventDetails(event: event, user: widget.user)));
+  }
+
+  String descpSub(String descp) {
+    if (descp.length > 35) {
+      return descp.substring(0, 35) + "...";
+    } else {
+      return descp;
+    }
   }
 
   void _logout() {
-     Navigator.push(
+    Navigator.push(
         context, MaterialPageRoute(builder: (content) => const LoginScreen()));
   }
 
-    _searchevent(String evtitle) {
+  _searchevent(String evtitle) {
     http.post(
         Uri.parse(
             "http://hubbuddies.com/s269926/event_announce_system/php/load_event.php"),

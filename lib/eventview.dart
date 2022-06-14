@@ -218,13 +218,12 @@ class _EventViewState extends State<EventView> {
                                                       fontSize: 20,
                                                       fontWeight:
                                                           FontWeight.bold)),
-                                              // Text(
-                                              //     _eventList[index]
-                                              //         ['evdescription'],
-                                              //     style: const TextStyle(
-                                              //         fontSize: 16,
-                                              //         fontWeight:
-                                              //             FontWeight.bold)),
+                                                          Text(
+                                                  descpSub(_eventList[index]
+                                                      ['evdescription']),
+                                                  style: const TextStyle(
+                                                      fontSize: 14)),
+                                            
                                             ],
                                           ),
                                         ),
@@ -303,11 +302,12 @@ class _EventViewState extends State<EventView> {
   //   );
   // }
 
-  String titleSub(String title) {
-    if (title.length > 20) {
-      return title.substring(0, 25) + "...";
+
+    String descpSub(String descp) {
+    if (descp.length > 35) {
+      return descp.substring(0, 35) + "...";
     } else {
-      return title;
+      return descp;
     }
   }
 

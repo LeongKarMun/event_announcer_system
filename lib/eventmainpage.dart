@@ -61,10 +61,10 @@ class _EventMainPageState extends State<EventMainPage> {
             title: const Text("My Account", style: TextStyle(fontSize: 16)),
             onTap: () {
               Navigator.pop(context);
-              Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                      builder: (content) => Profile(user: widget.user)));
+              // Navigator.push(
+              //     context,
+              //     MaterialPageRoute(
+              //         builder: (content) => Profile(user: widget.user)));
             },
           ),
           ListTile(

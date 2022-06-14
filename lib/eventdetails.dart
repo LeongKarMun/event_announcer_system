@@ -198,7 +198,7 @@ class _EventDetailsState extends State<EventDetails> {
         // });
       } else if (response.body == "duplicate") {
         Fluttertoast.showToast(
-            msg: "The id has been store in databse",
+            msg: "The id has been register this event",
             toastLength: Toast.LENGTH_SHORT,
             gravity: ToastGravity.CENTER,
             timeInSecForIosWeb: 1,
