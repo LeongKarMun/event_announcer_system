@@ -1,13 +1,8 @@
-import 'dart:convert';
-import 'dart:io';
 
 import 'package:event_announcer_system/event.dart';
 import 'package:event_announcer_system/user.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
-import 'package:image_cropper/image_cropper.dart';
-import 'package:image_picker/image_picker.dart';
-import 'package:progress_dialog/progress_dialog.dart';
 import 'package:http/http.dart' as http;
 
 class EditEventInfo extends StatefulWidget {

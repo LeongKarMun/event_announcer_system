@@ -107,42 +107,4 @@ class _EventStatusState extends State<EventStatus> {
       ),
     );
   }
-
-  // void _viewParticipateStatus() {
-  //   Builder(builder: (context) {
-  //     return ListView(children: const <Widget>[
-  //       Center(
-  //         child: Text('Participate List',
-  //             style: TextStyle(fontSize: 25, fontWeight: FontWeight.bold)),
-              
-  //       ),
-        
-  //     ]);
-  //   });
-  // }
-
-  // _loadParticipate(String evid) {
-  //   print(evid);
-  //   http.post(
-  //       Uri.parse(
-  //           "http://hubbuddies.com/s269926/event_announce_system/php/load_participate.php"),
-  //       body: {
-  //         "evid": evid,
-  //       }).then((response) {
-  //     if (response.body == "nodata") {
-  //       _titlecenter = "Sorry no participate";
-  //       _participateList = [];
-  //       return;
-  //     } else {
-  //       var jsondata = json.decode(response.body);
-  //       _participateList = jsondata["participate"];
-  //       setState(() {});
-  //       print(_participateList);
-  //     }
-  //   });
-  // }
-
-  // Future<void> _testasync() async {
-  //   await _loadParticipate(widget.event.evid!.toString());
-  // }
 }

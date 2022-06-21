@@ -1,8 +1,7 @@
 class User {
-  String? user_id, user_email, username, phoneno, type;
+  String? user_email, username, phoneno, type;
 
   User({
-    this.user_id,
      this.user_email, 
      this.username, 
      this.phoneno, 

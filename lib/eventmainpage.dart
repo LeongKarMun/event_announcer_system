@@ -57,16 +57,16 @@ class _EventMainPageState extends State<EventMainPage> {
                       builder: (content) => EventView(user: widget.user)));
             },
           ),
-          ListTile(
-            title: const Text("My Account", style: TextStyle(fontSize: 16)),
-            onTap: () {
-              Navigator.pop(context);
-              // Navigator.push(
-              //     context,
-              //     MaterialPageRoute(
-              //         builder: (content) => Profile(user: widget.user)));
-            },
-          ),
+          // ListTile(
+          //   title: const Text("My Account", style: TextStyle(fontSize: 16)),
+          //   onTap: () {
+          //     Navigator.pop(context);
+          //     // Navigator.push(
+          //     //     context,
+          //     //     MaterialPageRoute(
+          //     //         builder: (content) => Profile(user: widget.user)));
+          //   },
+          // ),
           ListTile(
               title: const Text("Logout", style: TextStyle(fontSize: 16)),
               onTap: _logout),

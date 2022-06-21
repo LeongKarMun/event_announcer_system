@@ -7,7 +7,6 @@ import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:image_cropper/image_cropper.dart';
 import 'package:image_picker/image_picker.dart';
-import 'package:progress_dialog/progress_dialog.dart';
 import 'package:http/http.dart' as http;
 
 class EditEventImage extends StatefulWidget {
@@ -21,7 +20,6 @@ class EditEventImage extends StatefulWidget {
 }
 
 class _EditEventImageState extends State<EditEventImage> {
-  // late ProgressDialog pr;
   late double screenHeight, screenWidth;
   String pathAsset = 'assets/images/camera.png';
   var _image;

@@ -295,6 +295,17 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
                               const Color.fromRGBO(191, 30, 46, 50),
                           textColor: Colors.white,
                           fontSize: 16.0);
+                    } else if (response.body == "duplicate") {
+                      Fluttertoast.showToast(
+                          msg:
+                              "The email is already registered !!!",
+                          toastLength: Toast.LENGTH_SHORT,
+                          gravity: ToastGravity.BOTTOM,
+                          timeInSecForIosWeb: 5,
+                          backgroundColor:
+                              const Color.fromRGBO(191, 30, 46, 50),
+                          textColor: Colors.white,
+                          fontSize: 16.0);
                     } else {
                       Fluttertoast.showToast(
                           msg: "Registration/Request Failed",
